@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Niaz Mahmood Chowdhury — Cloud Infrastructure & Database Administration</title>
+<meta name="description" content="IT professional in Kuala Lumpur with hands-on experience in Oracle Cloud Infrastructure (OCI), Oracle Database 19c, and Linux administration." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0B1620;
+    --bg-2:#0E1C28;
+    --panel:#112233;
+    --panel-2:#13283b;
+    --ink:#DCE7F0;
+    --ink-soft:#B6C8D6;
+    --dim:#7E97AB;
+    --faint:#5A7387;
+    --line:rgba(127,167,196,.14);
+    --line-strong:rgba(127,167,196,.26);
+    --accent:#54A3D4;
+    --accent-deep:#357EB0;
+    --signal:#D9A05B;
+    --max:1080px;
+    --r:10px;
+    --display:"Space Grotesk",system-ui,sans-serif;
+    --body:"IBM Plex Sans",system-ui,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,monospace;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* blueprint grid */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    background-image:
+      linear-gradient(var(--line) 1px,transparent 1px),
+      linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:46px 46px;
+    background-position:center;
+    mask-image:radial-gradient(ellipse 120% 90% at 50% 0%,#000 55%,transparent 100%);
+    opacity:.6;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px;position:relative;z-index:1}
+
+  /* ---------- mono utility label ---------- */
+  .tag{
+    font-family:var(--mono);
+    font-size:.72rem;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--accent);
+  }
+  .tag::before{content:"// "}
+
+  /* ---------- nav ---------- */
+  header.nav{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(10px);
+    background:rgba(11,22,32,.78);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:var(--max);margin:0 auto;padding:14px 28px;
+    display:flex;align-items:center;justify-content:space-between;gap:18px;
+  }
+  .brand{
+    font-family:var(--mono);font-weight:500;font-size:.92rem;
+    letter-spacing:.04em;color:var(--ink);
+    display:flex;align-items:center;gap:9px;
+  }
+  .brand .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--signal);
+    box-shadow:0 0 0 0 rgba(217,160,91,.5);
+    animation:pulse 2.6s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(217,160,91,.45)}
+    70%{box-shadow:0 0 0 7px rgba(217,160,91,0)}
+    100%{box-shadow:0 0 0 0 rgba(217,160,91,0)}
+  }
+  .nav-links{display:flex;gap:26px;align-items:center}
+  .nav-links a{
+    font-size:.86rem;color:var(--dim);transition:color .18s;
+  }
+  .nav-links a:hover{color:var(--ink)}
+  .nav-links .nav-cta{
+    color:var(--accent);border:1px solid var(--line-strong);
+    padding:7px 14px;border-radius:7px;
+  }
+  .nav-links .nav-cta:hover{border-color:var(--accent);color:var(--ink)}
+  @media(max-width:720px){ .nav-links a:not(.nav-cta){display:none} }
+
+  /* ---------- hero ---------- */
+  .hero{padding:72px 0 60px;position:relative}
+  .hero-grid{
+    display:grid;grid-template-columns:1.15fr .85fr;gap:46px;align-items:center;
+  }
+  .hero h1{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:clamp(2.3rem,5.2vw,3.5rem);
+    line-height:1.04;
+    letter-spacing:-.015em;
+    margin:.5rem 0 .4rem;
+  }
+  .hero .role{
+    font-family:var(--mono);
+    font-size:.95rem;
+    color:var(--ink-soft);
+    letter-spacing:.01em;
+  }
+  .hero .role b{color:var(--accent);font-weight:500}
+  .hero p.lede{
+    color:var(--dim);
+    font-size:1.02rem;
+    max-width:46ch;
+    margin:1.4rem 0 1.9rem;
+  }
+  .meta-row{
+    display:flex;gap:18px;flex-wrap:wrap;align-items:center;
+    font-family:var(--mono);font-size:.78rem;color:var(--faint);
+    margin-bottom:1.9rem;
+  }
+  .meta-row span{display:flex;align-items:center;gap:7px}
+  .meta-row svg{width:13px;height:13px;stroke:var(--accent);fill:none;stroke-width:1.6}
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{
+    font-family:var(--body);font-size:.9rem;font-weight:500;
+    padding:11px 20px;border-radius:8px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:9px;
+    transition:transform .15s ease,background .18s,border-color .18s;
+  }
+  .btn:hover{transform:translateY(-2px)}
+  .btn-primary{background:var(--accent);color:#06121c;font-weight:600}
+  .btn-primary:hover{background:#69b3df}
+  .btn-ghost{border:1px solid var(--line-strong);color:var(--ink-soft)}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--ink)}
+
+  /* ---------- topology signature ---------- */
+  .topo{
+    width:100%;height:auto;
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    background:linear-gradient(160deg,var(--bg-2),#0a141d);
+    padding:6px;
+  }
+  .topo-cap{
+    font-family:var(--mono);font-size:.66rem;color:var(--faint);
+    letter-spacing:.14em;text-transform:uppercase;
+    padding:6px 8px 0;display:flex;justify-content:space-between;
+  }
+  .flow{stroke-dasharray:5 7;animation:flow 1.4s linear infinite}
+  @keyframes flow{to{stroke-dashoffset:-24}}
+  .node-pulse{animation:nodepulse 2.8s ease-in-out infinite}
+  @keyframes nodepulse{0%,100%{opacity:.45}50%{opacity:1}}
+
+  @media(max-width:840px){
+    .hero-grid{grid-template-columns:1fr;gap:34px}
+    .topo-wrap{max-width:440px}
+  }
+
+  /* ---------- section frame ---------- */
+  section{padding:58px 0;position:relative}
+  .sec-head{margin-bottom:34px}
+  .sec-head h2{
+    font-family:var(--display);font-weight:600;
+    font-size:clamp(1.5rem,3.2vw,2rem);
+    letter-spacing:-.01em;margin:.5rem 0 0;
+  }
+  .sec-head p{color:var(--dim);margin:.5rem 0 0;max-width:60ch}
+  .rule{height:1px;background:var(--line);width:100%}
+
+  /* ---------- about ---------- */
+  .about-layout{display:grid;grid-template-columns:1fr 320px;gap:46px;align-items:start}
+  .about-grid{display:grid;grid-template-columns:1fr;gap:18px}
+  .about-grid p{color:var(--ink-soft);margin:0}
+  .about-grid p .hl{color:var(--ink);font-weight:500}
+  .portrait{margin:0;position:relative}
+  .portrait img{
+    width:100%;display:block;border-radius:var(--r);
+    border:1px solid var(--line-strong);
+    filter:saturate(1.02);
+  }
+  .portrait::after{
+    content:"";position:absolute;inset:0;border-radius:var(--r);pointer-events:none;
+    box-shadow:inset 0 -70px 60px -40px rgba(11,22,32,.85);
+  }
+  .portrait figcaption{
+    font-family:var(--mono);font-size:.72rem;color:var(--faint);
+    letter-spacing:.04em;margin-top:10px;line-height:1.5;
+  }
+  @media(max-width:840px){
+    .about-layout{grid-template-columns:1fr;gap:30px}
+    .portrait{max-width:300px}
+  }
+
+  /* ---------- experience ---------- */
+  .xp{display:flex;flex-direction:column;gap:0}
+  .xp-item{
+    display:grid;grid-template-columns:170px 1fr;gap:28px;
+    padding:26px 0;border-top:1px solid var(--line);
+  }
+  .xp-item:first-child{border-top:none}
+  .xp-when{font-family:var(--mono);font-size:.78rem;color:var(--faint);padding-top:4px}
+  .xp-when .now{color:var(--signal)}
+  .xp-body h3{font-family:var(--display);font-size:1.18rem;font-weight:600;margin:0 0 2px}
+  .xp-body .org{color:var(--accent);font-size:.92rem;font-family:var(--mono);margin-bottom:14px}
+  .xp-body .org a{color:inherit;border-bottom:1px solid var(--line-strong);transition:border-color .18s}
+  .xp-body .org a:hover{border-color:var(--accent)}
+  a.hl{border-bottom:1px solid var(--line-strong);transition:border-color .18s,color .18s}
+  a.hl:hover{border-color:var(--accent)}
+  .xp-body ul{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+  .xp-body li{
+    color:var(--ink-soft);font-size:.94rem;padding-left:20px;position:relative;
+  }
+  .xp-body li::before{
+    content:"";position:absolute;left:2px;top:.72em;
+    width:6px;height:6px;border:1px solid var(--accent);transform:rotate(45deg);
+  }
+  @media(max-width:680px){
+    .xp-item{grid-template-columns:1fr;gap:10px}
+  }
+
+  /* ---------- projects ---------- */
+  .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .proj{
+    border:1px solid var(--line);border-radius:var(--r);
+    background:linear-gradient(165deg,var(--panel),var(--bg-2));
+    padding:24px;transition:border-color .2s,transform .2s;
+  }
+  .proj:hover{border-color:var(--line-strong);transform:translateY(-3px)}
+  .proj .pid{font-family:var(--mono);font-size:.7rem;color:var(--faint);letter-spacing:.12em}
+  .proj h3{font-family:var(--display);font-size:1.12rem;font-weight:600;margin:8px 0 3px}
+  .proj .client{color:var(--accent);font-size:.84rem;font-family:var(--mono);margin-bottom:13px}
+  .proj p{color:var(--ink-soft);font-size:.9rem;margin:0}
+  .proj .stack{display:flex;flex-wrap:wrap;gap:7px;margin-top:15px}
+  .proj .stack span{
+    font-family:var(--mono);font-size:.68rem;color:var(--dim);
+    border:1px solid var(--line);border-radius:5px;padding:3px 8px;
+  }
+  @media(max-width:680px){ .proj-grid{grid-template-columns:1fr} }
+
+  /* ---------- skills ---------- */
+  .skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px 40px}
+  .skill-col h4{
+    font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent);margin:0 0 13px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .skill-col h4::before{content:"";width:14px;height:1px;background:var(--accent)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chips span{
+    font-size:.84rem;color:var(--ink-soft);
+    background:var(--panel);border:1px solid var(--line);
+    border-radius:6px;padding:6px 11px;transition:border-color .18s,color .18s;
+  }
+  .chips span:hover{border-color:var(--accent);color:var(--ink)}
+  @media(max-width:680px){ .skill-grid{grid-template-columns:1fr} }
+
+  /* ---------- growth / roadmap stages ---------- */
+  .stage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .stage{
+    border:1px solid var(--line);border-radius:var(--r);
+    background:linear-gradient(165deg,var(--panel),var(--bg-2));
+    padding:22px;display:flex;flex-direction:column;
+    position:relative;overflow:hidden;
+  }
+  .stage::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:var(--stage-accent,var(--line-strong));
+  }
+  .stage-status{
+    font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;
+  }
+  .stage-status .sdot{width:8px;height:8px;border-radius:50%;background:currentColor}
+  .s-active{color:var(--accent)}
+  .stage:nth-child(1){--stage-accent:var(--accent)}
+  .s-start{color:var(--signal)}
+  .stage:nth-child(2){--stage-accent:var(--signal)}
+  .s-next{color:var(--dim)}
+  .stage:nth-child(3){--stage-accent:var(--faint)}
+  .s-active .sdot{animation:pulse 2.6s infinite;box-shadow:0 0 0 0 rgba(84,163,212,.5)}
+  .stage h3{font-family:var(--display);font-size:1.08rem;font-weight:600;margin:0 0 8px}
+  .stage p{color:var(--ink-soft);font-size:.9rem;margin:0 0 15px;flex-grow:1}
+  .stage .stack{display:flex;flex-wrap:wrap;gap:7px}
+  .stage .stack span{
+    font-family:var(--mono);font-size:.68rem;color:var(--dim);
+    border:1px solid var(--line);border-radius:5px;padding:3px 8px;
+  }
+  @media(max-width:760px){ .stage-grid{grid-template-columns:1fr} }
+
+  /* ---------- certs + edu two-up ---------- */
+  .two-up{display:grid;grid-template-columns:1.3fr 1fr;gap:46px}
+  .cert-list{display:flex;flex-direction:column;gap:2px}
+  .cert{
+    display:grid;grid-template-columns:1fr auto;gap:14px;align-items:baseline;
+    padding:13px 0;border-top:1px solid var(--line);
+  }
+  .cert:first-child{border-top:none}
+  .cert .name{color:var(--ink);font-size:.94rem}
+  .cert .iss{font-family:var(--mono);font-size:.72rem;color:var(--faint);white-space:nowrap}
+  .edu-item{margin-bottom:22px}
+  .edu-item h3{font-family:var(--display);font-size:1.02rem;font-weight:600;margin:0 0 2px}
+  .edu-item .sub{color:var(--dim);font-size:.88rem}
+  .edu-item .yr{font-family:var(--mono);font-size:.74rem;color:var(--accent);margin-top:3px}
+  .lang-line{font-family:var(--mono);font-size:.82rem;color:var(--ink-soft);margin-top:6px}
+  @media(max-width:680px){ .two-up{grid-template-columns:1fr;gap:34px} }
+
+  /* ---------- contact ---------- */
+  .contact{
+    border:1px solid var(--line-strong);border-radius:14px;
+    background:linear-gradient(160deg,var(--panel-2),var(--bg-2));
+    padding:42px;text-align:center;
+  }
+  .contact h2{font-family:var(--display);font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:600;margin:.4rem 0 .6rem}
+  .contact p{color:var(--dim);max-width:50ch;margin:0 auto 26px}
+  .contact .links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .iconlink{
+    display:inline-flex;align-items:center;gap:9px;
+    border:1px solid var(--line-strong);border-radius:8px;
+    padding:11px 18px;font-size:.9rem;color:var(--ink-soft);
+    transition:border-color .18s,color .18s,transform .15s;
+  }
+  .iconlink:hover{border-color:var(--accent);color:var(--ink);transform:translateY(-2px)}
+  .iconlink svg{width:16px;height:16px;stroke:var(--accent);fill:none;stroke-width:1.7}
+
+  /* ---------- footer ---------- */
+  footer{padding:40px 0 56px;border-top:1px solid var(--line);margin-top:40px}
+  .foot-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+  .foot-inner .mono{font-family:var(--mono);font-size:.74rem;color:var(--faint)}
+  .ref-note{font-family:var(--mono);font-size:.74rem;color:var(--faint)}
+
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top"><span class="dot"></span>niaz_mahmood_chowdhury</a>
+    <nav class="nav-links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact" class="nav-cta">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<a id="top"></a>
+<div class="hero wrap">
+  <div class="hero-grid">
+    <div>
+      <span class="tag">Kuala Lumpur, Malaysia</span>
+      <h1>Niaz Mahmood<br>Chowdhury</h1>
+      <div class="role"><b>Cloud Infrastructure</b> · <b>Database Administration</b> · <b>Linux</b></div>
+      <p class="lede">IT professional with hands-on experience deploying and supporting Oracle Cloud Infrastructure, Oracle Database 19c, and Linux environments for enterprise clients — and building toward running infrastructure independently.</p>
+      <div class="meta-row">
+        <span><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/></svg>OCI · DBA · DevOps-track</span>
+        <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>EN (IELTS 7.5) · BN</span>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="mailto:c.niazmahmood@gmail.com">Email me</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/niaz-mahmood-chowdhury" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn btn-ghost" href="CV_Niaz_Mahmood_Chowdhury.pdf" target="_blank" rel="noopener">Résumé (PDF)</a>
+      </div>
+    </div>
+
+    <!-- topology signature: OCI <-> on-prem IPSec tunnel -->
+    <div class="topo-wrap">
+      <div class="topo">
+        <div class="topo-cap"><span>topology.map</span><span>ipsec · site-to-site</span></div>
+        <svg viewBox="0 0 440 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Network topology: an on-premises data center connected to Oracle Cloud Infrastructure over an IPSec VPN tunnel.">
+          <defs>
+            <style>
+              .lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;fill:#7E97AB;letter-spacing:.06em}
+              .lbl-a{fill:#54A3D4}
+              .box{fill:#112233;stroke:#2c4a63;stroke-width:1}
+              .edge{stroke:#2c4a63;stroke-width:1.2;fill:none}
+            </style>
+          </defs>
+
+          <!-- ON-PREM cluster (left) -->
+          <text class="lbl lbl-a" x="22" y="34">ON-PREM DC</text>
+          <rect class="box" x="22" y="44" width="58" height="22" rx="3"/>
+          <rect class="box" x="22" y="72" width="58" height="22" rx="3"/>
+          <rect class="box" x="22" y="100" width="58" height="22" rx="3"/>
+          <text class="lbl" x="30" y="59">db-11g</text>
+          <text class="lbl" x="30" y="87">db-19c</text>
+          <text class="lbl" x="30" y="115">oda</text>
+
+          <!-- on-prem gateway -->
+          <rect class="box" x="118" y="68" width="46" height="30" rx="4"/>
+          <text class="lbl" x="126" y="86">VPN-GW</text>
+          <path class="edge" d="M80 55 L118 80 M80 83 L118 83 M80 111 L118 86"/>
+
+          <!-- OCI cluster (right) -->
+          <text class="lbl lbl-a" x="330" y="34">OCI · VCN</text>
+          <rect class="box" x="358" y="44" width="58" height="22" rx="3"/>
+          <rect class="box" x="358" y="72" width="58" height="22" rx="3"/>
+          <rect class="box" x="358" y="100" width="58" height="22" rx="3"/>
+          <text class="lbl" x="366" y="59">rac-1</text>
+          <text class="lbl" x="366" y="87">rac-2</text>
+          <text class="lbl" x="366" y="115">adb</text>
+
+          <!-- OCI gateway / DRG -->
+          <rect class="box" x="276" y="68" width="46" height="30" rx="4"/>
+          <text class="lbl" x="285" y="86">DRG</text>
+          <path class="edge" d="M322 80 L358 55 M322 83 L358 83 M322 86 L358 111"/>
+
+          <!-- IPSec tunnel -->
+          <line x1="164" y1="83" x2="276" y2="83" stroke="#54A3D4" stroke-width="1.6" class="flow"/>
+          <circle class="node-pulse" cx="164" cy="83" r="3.5" fill="#D9A05B"/>
+          <circle class="node-pulse" cx="276" cy="83" r="3.5" fill="#D9A05B"/>
+          <text class="lbl lbl-a" x="186" y="76">IPSec TUNNEL ▸</text>
+
+          <!-- baseline schematic frame -->
+          <line x1="22" y1="150" x2="416" y2="150" stroke="#1c3346" stroke-width="1"/>
+          <text class="lbl" x="22" y="170">RAC · Active Data Guard · RMAN · ExaCC</text>
+          <text class="lbl" x="22" y="186">VCN · subnets · security-lists · site-to-site VPN</text>
+
+          <!-- legend dots -->
+          <circle cx="26" cy="208" r="3" fill="#54A3D4"/><text class="lbl" x="36" y="211">cloud</text>
+          <circle cx="92" cy="208" r="3" fill="#D9A05B"/><text class="lbl" x="102" y="211">tunnel</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ABOUT ===== -->
+<section id="about" class="wrap reveal">
+  <div class="sec-head">
+    <span class="tag">About</span>
+    <h2>Hands-on with enterprise Oracle &amp; OCI</h2>
+  </div>
+  <div class="about-layout">
+    <div class="about-grid">
+      <p>I spent two and a half years at <a class="hl" href="https://smartbd.com/" target="_blank" rel="noopener">Smart Technologies (BD) Ltd</a>, an Oracle partner in Bangladesh, working on cloud and database infrastructure for banking and pharmaceutical clients. That covered Oracle Database 19c with RAC and Active Data Guard, ExaCC and ODA engineered systems, backup and recovery, and IPSec VPN tunneling between OCI and on-premises data centers.</p>
+      <p>I did that work on <span class="hl">live, high-stakes systems</span> — core banking and pharmaceutical databases where downtime isn't an option — as part of the delivery team alongside senior engineers. Real migrations, real backups, real production stakes. It's given me a solid, practical grounding in how enterprise Oracle and OCI environments are built, secured, and kept running.</p>
+      <p>I'm currently a <span class="hl">Trust &amp; Safety Associate at <a class="hl" href="https://www.accenture.com/my-en" target="_blank" rel="noopener">Accenture Malaysia</a></span> in Kuala Lumpur, while I move back toward cloud infrastructure and database work — the direction I want my career to go, with DevOps and cloud engineering as the longer goal.</p>
+    </div>
+    <figure class="portrait">
+      <img src="niaz-speaking.jpg" alt="Niaz Mahmood Chowdhury presenting on stage at a SMART Technologies MySQL event" loading="lazy" />
+      <figcaption>Presenting at a SMART Technologies × MySQL event, Dhaka</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== EXPERIENCE ===== -->
+<section id="experience" class="wrap reveal">
+  <div class="sec-head">
+    <span class="tag">Experience</span>
+    <h2>Professional experience</h2>
+  </div>
+  <div class="xp">
+    <div class="xp-item">
+      <div class="xp-when">Oct 2025 — <span class="now">Present</span></div>
+      <div class="xp-body">
+        <h3>Trust &amp; Safety Associate (Bengali Speaker)</h3>
+        <div class="org"><a href="https://www.accenture.com/my-en" target="_blank" rel="noopener">Accenture Malaysia</a> · Kuala Lumpur</div>
+        <ul>
+          <li>Review and moderate user- and AI-generated content against global platform safety policies, including child-safety standards.</li>
+          <li>Identify and escalate sensitive or policy-violating material with accuracy, neutrality, and confidentiality.</li>
+          <li>Contribute to Generative AI Trust &amp; Safety initiatives supporting responsible AI deployment at scale.</li>
+          <li>Collaborate with international teams on workflow and escalation improvements.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="xp-item">
+      <div class="xp-when">Mar 2023 — Sep 2025</div>
+      <div class="xp-body">
+        <h3>Solution Engineer — OCI · Oracle DB · MySQL</h3>
+        <div class="org"><a href="https://smartbd.com/" target="_blank" rel="noopener">Smart Technologies (BD) Ltd</a> · Dhaka</div>
+        <ul>
+          <li>Deployed and managed cloud infrastructure on OCI for enterprise clients across banking and pharmaceutical sectors.</li>
+          <li>Administered Oracle Database 19c environments — RAC, Active Data Guard, Autonomous Database — covering patching, backup, and replication troubleshooting.</li>
+          <li>Configured and maintained MySQL 8.0 deployments with replication and InnoDB cluster setups.</li>
+          <li>Supported Oracle engineered systems including Exadata Cloud@Customer (ExaCC), Oracle Database Appliance (ODA), and OC3.</li>
+          <li>Set up Linux services (DNS, NTP, proxy) and IPv4 networking, including IPSec VPN tunneling between OCI and on-prem data centers.</li>
+          <li>Automated routine operations — backups, log analysis, health checks — using Bash and Python.</li>
+          <li>Provided post-installation support and troubleshooting under SLA constraints during client go-live phases.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROJECTS ===== -->
+<section id="projects" class="wrap reveal">
+  <div class="sec-head">
+    <span class="tag">Selected projects</span>
+    <h2>Client work</h2>
+    <p>Enterprise deployments I supported at Smart Technologies, in collaboration with the project teams.</p>
+  </div>
+  <div class="proj-grid">
+    <div class="proj">
+      <div class="pid">P · 01</div>
+      <h3>Remittance App Cloud Migration</h3>
+      <div class="client">Agrani Bank PLC</div>
+      <p>Supported migration of the remittance application and Oracle DB 19c to OCI with minimal downtime; helped configure VCN, subnets, security lists, and IPSec VPN to the bank's on-prem data center; assisted with Autonomous Database and MySQL Database Service for HA and backup.</p>
+      <div class="stack"><span>OCI</span><span>Oracle 19c</span><span>IPSec VPN</span><span>ADB</span></div>
+    </div>
+    <div class="proj">
+      <div class="pid">P · 02</div>
+      <h3>OCI &amp; Database Migration</h3>
+      <div class="client">Renata Limited</div>
+      <p>Assisted in migrating large-scale databases from on-prem to OCI for pharmaceutical workloads; configured OCI networking and IPSec VPN tunneling; supported compute, storage, and database performance optimization after migration.</p>
+      <div class="stack"><span>OCI</span><span>Migration</span><span>Networking</span><span>Tuning</span></div>
+    </div>
+    <div class="proj">
+      <div class="pid">P · 03</div>
+      <h3>Oracle Database Appliance (ODA)</h3>
+      <div class="client">West Zone Power Distribution Co.</div>
+      <p>Assisted in configuring the ODA including networking and NFS; supported migration of Oracle DB 11gR2 to 19c on PDB/CDB architecture; participated in ODA provisioning and post-deployment validation.</p>
+      <div class="stack"><span>ODA</span><span>11gR2 → 19c</span><span>PDB/CDB</span><span>NFS</span></div>
+    </div>
+    <div class="proj">
+      <div class="pid">P · 04</div>
+      <h3>Audit Vault &amp; Database Firewall</h3>
+      <div class="client">Probashi Kallyan Bank</div>
+      <p>Supported deployment and configuration of Oracle AVDF to strengthen database security and compliance; assisted with audit policies, monitoring, and alerting across core banking databases; performed post-deployment validation and basic tuning.</p>
+      <div class="stack"><span>AVDF</span><span>Security</span><span>Auditing</span><span>Compliance</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SKILLS ===== -->
+<section id="skills" class="wrap reveal">
+  <div class="sec-head">
+    <span class="tag">Technical skills</span>
+    <h2>What I work with</h2>
+  </div>
+  <div class="skill-grid">
+    <div class="skill-col">
+      <h4>Cloud &amp; Infrastructure</h4>
+      <div class="chips">
+        <span>OCI</span><span>ExaCC</span><span>ODA</span><span>OC3</span><span>VCN</span><span>IPSec VPN</span><span>Disaster Recovery</span>
+      </div>
+    </div>
+    <div class="skill-col">
+      <h4>Databases</h4>
+      <div class="chips">
+        <span>Oracle DB 19c (EE)</span><span>RAC</span><span>Active Data Guard</span><span>Autonomous DB / ATP</span><span>MySQL 8.0</span><span>InnoDB Cluster</span><span>Backup &amp; Recovery</span><span>Migration</span>
+      </div>
+    </div>
+    <div class="skill-col">
+      <h4>Operating Systems</h4>
+      <div class="chips">
+        <span>Oracle Enterprise Linux</span><span>RHEL</span><span>Ubuntu</span><span>DNS</span><span>NTP</span><span>Proxy</span>
+      </div>
+    </div>
+    <div class="skill-col">
+      <h4>Scripting, Tools &amp; Networking</h4>
+      <div class="chips">
+        <span>Bash</span><span>Python</span><span>Git</span><span>Docker (fundamentals)</span><span>YAML</span><span>IPv4</span><span>Site-to-Site VPN</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GROWTH / ROADMAP ===== -->
+<section id="growth" class="wrap reveal">
+  <div class="sec-head">
+    <span class="tag">In progress</span>
+    <h2>Where I'm growing</h2>
+    <p>An honest snapshot of my move toward DevOps — what I'm hands-on with now, and what's next. Staged, not exaggerated.</p>
+  </div>
+  <div class="stage-grid">
+    <div class="stage">
+      <div class="stage-status s-active"><span class="sdot"></span>Active now</div>
+      <h3>Linux on self-managed cloud VMs</h3>
+      <p>Building and running my own instances on OCI Always Free and AWS EC2 (Ubuntu) — day-to-day server administration, shell, users, services, and networking.</p>
+      <div class="stack"><span>OCI Always Free</span><span>AWS EC2</span><span>Ubuntu Server</span><span>Bash</span></div>
+    </div>
+    <div class="stage">
+      <div class="stage-status s-start"><span class="sdot"></span>Getting started</div>
+      <h3>Docker fundamentals</h3>
+      <p>Early stage — learning images, containers, and basic isolation. Honestly at the beginning of this one, working up from the fundamentals.</p>
+      <div class="stack"><span>Containers</span><span>Images</span><span>Dockerfile</span></div>
+    </div>
+    <div class="stage">
+      <div class="stage-status s-next"><span class="sdot"></span>Next on the roadmap</div>
+      <h3>IaC &amp; CI/CD</h3>
+      <p>Planned next steps as I work through my DevOps roadmap — not started yet, listed here so the direction is clear.</p>
+      <div class="stack"><span>Terraform</span><span>CI/CD pipelines</span><span>GitOps</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CERTS + EDUCATION ===== -->
+<section id="credentials" class="wrap reveal">
+  <div class="two-up">
+    <div>
+      <div class="sec-head">
+        <span class="tag">Certifications</span>
+        <h2>Licenses &amp; certifications</h2>
+      </div>
+      <div class="cert-list">
+        <div class="cert"><span class="name">OCI 2023 Certified Architect Associate</span><span class="iss">Oracle</span></div>
+        <div class="cert"><span class="name">OCI 2023 Certified Observability Professional</span><span class="iss">Oracle</span></div>
+        <div class="cert"><span class="name">MySQL 8.0 Database Administrator Professional</span><span class="iss">Oracle</span></div>
+        <div class="cert"><span class="name">MySQL Implementation Certified Associate</span><span class="iss">Oracle</span></div>
+        <div class="cert"><span class="name">The Bits and Bytes of Computer Networking</span><span class="iss">Google · 2023</span></div>
+        <div class="cert"><span class="name">Reinvention with Agentic AI Learning Program</span><span class="iss">Accenture</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="sec-head">
+        <span class="tag">Education</span>
+        <h2>Background</h2>
+      </div>
+      <div class="edu-item">
+        <h3>B.Sc. in Computer Science &amp; Engineering</h3>
+        <div class="sub">North South University, Dhaka</div>
+        <div class="yr">2017 — 2022</div>
+      </div>
+      <div class="edu-item">
+        <h3>Higher Secondary Certificate (HSC)</h3>
+        <div class="sub">Cumilla Cadet College, Cumilla</div>
+        <div class="yr">2015</div>
+      </div>
+      <div class="edu-item">
+        <h3>Languages</h3>
+        <div class="lang-line">English — Professional (IELTS 7.5)</div>
+        <div class="lang-line">Bengali — Native</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact" class="wrap reveal">
+  <div class="contact">
+    <span class="tag">Contact</span>
+    <h2>Let's talk infrastructure</h2>
+    <p>Open to Oracle DBA, Linux administration, and cloud infrastructure roles in Kuala Lumpur. The fastest way to reach me is email.</p>
+    <div class="links">
+      <a class="iconlink" href="mailto:c.niazmahmood@gmail.com">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+        c.niazmahmood@gmail.com
+      </a>
+      <a class="iconlink" href="https://www.linkedin.com/in/niaz-mahmood-chowdhury" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4M11 11v6"/></svg>
+        LinkedIn
+      </a>
+      <a class="iconlink" href="https://github.com/Niaz-Mahmood-Chowdhury" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M9 19c-4 1.5-4-2-6-2m12 4v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1-.3-3.4 1.3a11.6 11.6 0 0 0-6 0C7.3 1.3 6.3 1.6 6.3 1.6a4.3 4.3 0 0 0-.1 3.2A4.6 4.6 0 0 0 5 8c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="wrap">
+  <div class="foot-inner">
+    <div class="mono">© 2026 Niaz Mahmood Chowdhury · Kuala Lumpur, MY</div>
+    <div class="ref-note">References available on request</div>
+  </div>
+</footer>
+
+<script>
+  // scroll reveal
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
